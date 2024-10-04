@@ -1,0 +1,6 @@
+title: Alle Methoden mit mehr als 200 Zeilen Code
+name: MethodRule200
+object: Method
+property: LOC
+operator: GreaterThan
+value: 200

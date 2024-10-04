@@ -1,0 +1,6 @@
+title: Alle Klassen mit mehr als 500 Zeilen
+name: ClasssizeRule1
+object: Class
+property: LOC
+operator: GreaterThan
+value: 500

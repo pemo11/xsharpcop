@@ -1,0 +1,6 @@
+title: Alle Konstruktoren mit mehr als 20 Zeilen Code
+name: Constructor20Rule
+object: Constructor
+property: LOC
+operator: GreaterThan
+value: 20

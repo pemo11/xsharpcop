@@ -1,0 +1,7 @@
+title: Alle Klassen ohne Kommentarblock
+name: ClassCommentsRule1
+object: Class
+property: HasComment
+operator: Equal
+value: $false
+

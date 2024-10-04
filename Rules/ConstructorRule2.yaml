@@ -1,0 +1,6 @@
+title: Alle Konstruktoren mit mehr als 50 Zeilen Code
+name: Constructor50Rule
+object: Constructor
+property: LOC
+operator: GreaterThan
+value: 50
