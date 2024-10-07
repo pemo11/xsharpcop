@@ -30,7 +30,7 @@ Using X#, C# or maybe Python would not offer that interactivity (it would be muc
 And since I have wrapped all the functionality in a WinForms app its also simple to use.
 
 =====================  
-How to run it
+How to run it  
 =====================  
 
 Requirements are PowerShell 7.x which has to downloaded and installed first:
@@ -87,7 +87,7 @@ It works with these simple rules which is good.
 Its **not** possible to combine conditions or rules.
 
 =====================  
-Release history
+Release history  
 =====================  
 
 0.4 (10/04/24) - The current version 0.4 works as expected (but I think there is a bug because sometimes the displayed class name in the gridview is not the name of class).
