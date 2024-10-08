@@ -30,10 +30,10 @@ So, the query first gets all class definitions as objects and then filters out t
 
 Using X#, C# or maybe Python would not offer that interactivity (and it would be much more effort to implement it).
 
-The command line is just an option for every X# devloper that is already familiar with the commandline. But its definitely more convinient to use _XSharpCop_ as a WinForms app.
+The command line is just an option for every X# devloper that is already familiar with the commandline. But its definitely more convenient to use _XSharpCop_ as a WinForms app.
 
 ---
-How to run it  
+How to run XSharpCop as a GUI
 ---
 
 Requirements are PowerShell 7.x which has to be downloaded and installed first:
@@ -70,7 +70,7 @@ operator: Equal
 value: $false
 ```
 
-This rule should find all class definitions without a comment block.
+This rule should find all class definitions without a preceding comment block.
 
 Or for finding constructors with more than 50 lines of code:
 
@@ -88,6 +88,12 @@ The _object_ has to be _class_, _constructor_, _method_ or _property_. The prope
 It works with these simple rules which is good.
 
 Its **not** possible to combine conditions or rules. Implementing the logic is not too much effort but providing a UI interface and all the testing is a bit of a challenge.
+
+---
+How to run XSharpCop for the command line
+---
+
+*** not ready yet (sorry)
 
 ---
 Release history  
