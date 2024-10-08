@@ -13,9 +13,9 @@ Since I am mostly interested in metrics like LOC, CC, simple naming conventions 
 
 And since I couldn't find any static code analyzer for X# I had to make my own and hopefully provide some value for other X# developers.
 
-Why PowerShell? Because I use it a lot since day 1 (2006) and its a powerfull and flexible scripting language for .Net. Because of its object pipeline I don't have to use LINQ (which would be possible) for doing queries like
+Why PowerShell? Because I use it a lot since day 1 (2006) and its a powerfull and flexible scripting language for .Net. Because of its object pipeline I don't have to use LINQ (which would be possible) for doing queries like "Get all methods with a LOC greater an 100".
 
-That means, that the codebase can be queried either as part of the GUI tool or in the command line if the XSharpCop module had been loaded and a project had been analyzed (I will explain later how to do this):
+That means, the codebase can be queried either as part of the GUI tool or in the command line if the XSharpCop module had been loaded and a project had been analyzed (I will explain later how to do this):
 
 For example:
 ```PowerShell
