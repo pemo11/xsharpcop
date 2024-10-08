@@ -4,30 +4,33 @@ Current version 0.4 from 10/04/2024
 
 ## A simple static source code analyzer for X# with rules based on a PowerShell script and a _WinForms GUI_
 
-The idea for this tool was that I used _NDepend_ a lot but it has two disadvantages for me:
+The idea for this tool was that I use _NDepend_ a lot but it has two disadvantages for me:
 
-1. It does not support X# on a source code level (and it probably never will)
+1. It does not support X# on a source code level (and it probably never will) - that means that some queries are not possible
 2. It requires separate licences for my laptop and my desktop PC (which is quite expensive)
 
-Since I am mostly interested in metrics like LOC, CC, simple naming conventions and the usage of comments, I don't need most of the functionality that _NDepend_ has to offer.
+Since I am mostly interested in metrics like LOC, CC, simple naming conventions and the usage of comments, I don't need most of the functionality that _NDepend_ has to offer. And I am not using it as part of a CI pipeline.
+
+And since I couldn't find any static code analyzer for X# I had to make my own and hopefully provide some value for other X# developers.
 
 Why PowerShell? Because I use it a lot since day 1 (2006) and its a powerfull and flexible scripting language for .Net. Because of its object pipeline I don't have to use LINQ (which would be possible) for doing queries like
 
-A simple example for a query that is part of the XSharpCop
+That means, that the codebase can be queried either as part of the GUI tool or in the command line if the XSharpCop module had been loaded and a project had been analyzed (I will explain later how to do this):
 
+For example:
 ```PowerShell
 Get-Class | Where-Object { $_.Constructor.LOC -gt 100}
 ```
 
-_Get-Class_ is the name of a function in my script. It gets all the class definitions in all source files as objects with certain properties-
+_Get-Class_ is the name of a function in the PowerShell module. It gets all the class definitions based on the last codebase as objects with certain properties-
 
 One property is _Constructor_. Since its an object itself it offers properties like _LOC_.
 
-So the query first gets all class definitions as objects and then filters out whose who have constructors with more than 100 lines of code (LOC).
+So, the query first gets all class definitions as objects and then filters out those who have constructors with more than 100 lines of code (LOC).
 
-Using X#, C# or maybe Python would not offer that interactivity (it would be much more effort to implement it).
+Using X#, C# or maybe Python would not offer that interactivity (and it would be much more effort to implement it).
 
-And since I have wrapped all the functionality in a WinForms app its also simple to use.
+The command line is just an option for every X# devloper that is already familiar with the commandline. But its definitely more convinient to use _XSharpCop_ as a WinForms app.
 
 ---
 How to run it  
