@@ -33,6 +33,7 @@ function InitButtons
     $btnLoadRuleFile.Enabled = $false
     $btnAnalyzeRules.Enabled = $false
     $btnAnalyzeCodebase.Enabled = $false
+    $btnProjectOverview.Enabled = $false
 }
 
 function InitializeComponents
@@ -85,12 +86,18 @@ function InitializeComponents
     $btnAnalyzeCodebase.Location = [Point]::new(630, 60)
     $btnAnalyzeCodebase.Text = "Analyze codebase"
 
+    $Script:btnProjectOverview = [Button]::new()
+    $btnProjectOverview.Size = [Size]::new(120, 30)
+    $btnProjectOverview.Location = [Point]::new(630, 20)
+    $btnProjectOverview.Text = "Project overview"
+
     # Add all controls to the group control (usally with AddRange())
     $grpProject.Controls.Add($btnChooseProject)
     $grpProject.Controls.Add($btnLoadProject)
     $grpProject.Controls.Add($lblProjectPath)
     $grpProject.Controls.Add($lblSourceFileCount)
     $grpProject.Controls.Add($btnAnalyzeCodebase)
+    $grpProject.Controls.Add($btnProjectOverview)
 
     # Rules Group
     $grpRules = [GroupBox]::new()
@@ -145,6 +152,7 @@ function InitializeComponents
         $lblSourceFileCount.Text = "$($Script:SourceFileCount) source files"
         $btnLoadRuleFile.Enabled = $true
         $btnAnalyzeCodebase.Enabled = $true
+        $btnProjectOverview.Enabled = $true
     })
 
     $btnAnalyzeCodebase.Add_Click({
@@ -154,6 +162,18 @@ function InitializeComponents
         $bindingSource = [BindingSource]::new()
         $bindingSource.DataSource = $taResults.DefaultView
         $Script:dgvResults.DataSource = $bindingSource
+    })
+
+    $btnProjectOverview.Add_Click({
+        if (-not $Script:XSprojectPath) {
+            [MessageBox]::Show("No project loaded", "Error", [MessageBoxButtons]::OK, [MessageBoxIcon]::Error)
+            return
+        }
+        $project = [XSProject]::new("Overview", $XSprojectPath)
+        $analysisResult = $project.SimpelAnalyze()
+        $totalLoc = ($analysisResult | Measure-Object -Property TotalLOC -Sum).Sum
+        $message = "Project overview`nSource files: {0}`nTotal code lines: {1}" -f $Script:SourceFileCount, $totalLoc
+        [MessageBox]::Show($message, "Project overview")
     })
     
     $btnLoadRuleFile.Add_Click({
