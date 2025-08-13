@@ -1,6 +1,6 @@
 # XSharpCop
 
-Current version 0.4 from 10/04/2024
+Current version 0.5 from 13/08/2025
 
 ## A simple static source code analyzer for X# with rules based on a PowerShell script and a _WinForms GUI_
 
@@ -99,7 +99,7 @@ How to run XSharpCop for the command line
 Release history  
 ---
 
-0.4 (10/04/24) - The current version 0.4 works as expected (but I think there is a bug because sometimes the displayed class name in the gridview is not the name of class).
+0.5 (13/08/25) - The current version 0.5 works as expected (but I think there is a bug because sometimes the displayed class name in the gridview is not the name of class).
 
 It does not work with nested class definitions so far. This would be also not so difficult to fix but I have not had the time and energy to implement this.
 
@@ -123,3 +123,10 @@ My e-mail address is info@activetraining.de
 
 Peter Monadjemi
 
+**Update:**
+
+Das Zählen aller Codezeilen funktioniert noch nicht, es wird offenbar pro Klasse gezählt - die Gesamtzahl sollte bei 141838 liegen (ca.)
+
+ForEach-Object {
+        (Get-Content $_.FullName | Where-Object { $_.Trim() -ne "" -and -not ($_.Trim().StartsWith("//"))} | Measure-Object).Count
+} | Measure-Object -Sum

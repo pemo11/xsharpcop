@@ -22,5 +22,4 @@ class XSClass
     {
         $this.Name = $Name
     }
-
 }

@@ -35,8 +35,9 @@ class XSPrgFile
         $constructors = [List[XSConstructor]]::new()
         $curItem = $null
         $class = $null
-        $totalLOC = 0
-        $curItemLOC = 0
+    $totalLOC = 0
+    $curItemLOC = 0
+    $classLOC = 0
         $codeBody = ""
         $className = ""
         $commentMode = $False
@@ -74,12 +75,13 @@ class XSPrgFile
                 $commentMode = $False
                 $classes.Add($class)
                 $curItem = $class
+                $classLOC = 0
                 continue
             }
             if ($codeline -match "End\s+Class")
             {
-                $class.LOC = $totalLOC
-                $totalLOC = 0
+                $class.LOC = $classLOC
+                $classLOC = 0
             }
             # if ($codeLine -match '^\s*method\s+(\w+)\s*')
             # ChatGTP said this [a-zA-Z_][a-zA-Z0-9_] is necessary to avoid a method name with a digit at the beginning (?)
@@ -157,6 +159,9 @@ class XSPrgFile
             $codeBody += $codeLine
             $curItemLOC++
             $totalLOC++
+            if ($null -ne $curItem -and $curItem -is [XSClass]) {
+                $classLOC++
+            }
         }
         $sourceFile = [SourceFileContent]::new($this.PrgfilePath)
         $sourceFile.Classes = $classes

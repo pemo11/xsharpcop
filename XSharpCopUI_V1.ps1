@@ -88,7 +88,7 @@ function InitializeComponents
 
     $Script:btnProjectOverview = [Button]::new()
     $btnProjectOverview.Size = [Size]::new(120, 30)
-    $btnProjectOverview.Location = [Point]::new(630, 20)
+    $btnProjectOverview.Location = [Point]::new(760, 60)
     $btnProjectOverview.Text = "Project overview"
 
     # Add all controls to the group control (usally with AddRange())
@@ -169,11 +169,11 @@ function InitializeComponents
             [MessageBox]::Show("No project loaded", "Error", [MessageBoxButtons]::OK, [MessageBoxIcon]::Error)
             return
         }
-        $project = [XSProject]::new("Overview", $XSprojectPath)
-        $analysisResult = $project.SimpelAnalyze()
-        $totalLoc = ($analysisResult | Measure-Object -Property TotalLOC -Sum).Sum
-        $message = "Project overview`nSource files: {0}`nTotal code lines: {1}" -f $Script:SourceFileCount, $totalLoc
-        [MessageBox]::Show($message, "Project overview")
+    $project = [XSProject]::new("Overview", $XSprojectPath)
+    $analysisResultList = $project.SimpelAnalyze()
+    $totalLoc = ($analysisResultList | Measure-Object -Property TotalLOC -Sum).Sum
+    $message = "Project overview`nSource files: {0}`nTotal code lines: {1}" -f $Script:SourceFileCount, $totalLoc
+    [MessageBox]::Show($message, "Project overview")
     })
     
     $btnLoadRuleFile.Add_Click({
@@ -342,7 +342,7 @@ function InitializeComponents
 }
 
 $Form = [Form]::new()
-$Form.Text = "XSharpCop V 0.4 (04.10.2024)"
+$Form.Text = "XSharpCop V 0.5 (13.08.2025)"
 $Form.Size = [Size]::new(1000, 800)
 $Form.StartPosition = [FormStartPosition]::CenterScreen
 $Form.Add_Load({

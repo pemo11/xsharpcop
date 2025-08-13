@@ -43,56 +43,60 @@ class XSProject
     # Simple analyze without logging and UI
     [List[AnalysisResult]]SimpelAnalyze()
     {
-        $sourceFiles = Get-SourceFilesFromProject -ProjectFilePath $this.XSProjPath
-        $sourceFilesContent = [List[SourceFileContent]]::new()
-        foreach($sourceFile in $sourceFiles)
-        {
-            $sourceFilePath = Join-Path -Path (Split-Path -Path $this.XSProjPath) -ChildPath $sourceFile
-            $prgFile = [XSPrgFile]::new($sourceFilePath)
-            $result = $prgFile.Analyze()
-            $sourceFilesContent.Add($result)
-        }
         $analysisResults = [List[AnalysisResult]]::new()
-        foreach($content in $sourceFilesContent)
-        {
-            $analysisResult = [AnalysisResult]::new($content)
-            # class definitions
-            foreach($class in $content.classes) 
+        try {
+            $sourceFiles = Get-SourceFilesFromProject -ProjectFilePath $this.XSProjPath
+            $sourceFilesContent = [List[SourceFileContent]]::new()
+            foreach($sourceFile in $sourceFiles)
             {
-                $detail = [AnalysisDetail]::new("Class", $class.Name)
-                $detail.LOC = $class.LOC
-                $detail.CC = $class.CC
-                $detail.HasComment = $class.hasComment
-                $detail.SourcefilePath = $content.Path
-                $detail.Message = "Class with LOC: $($class.LOC), CC: $($class.CC) and HasComment: $($class.HasComment)"
-                $analysisResult.Details.Add($detail)
+                $sourceFilePath = Join-Path -Path (Split-Path -Path $this.XSProjPath) -ChildPath $sourceFile
+                $prgFile = [XSPrgFile]::new($sourceFilePath)
+                $result = $prgFile.Analyze()
+                $sourceFilesContent.Add($result)
             }
-            # Process methods and constructors
-            foreach($method in $content.Methods)
+            foreach($content in $sourceFilesContent)
             {
-                $detail = [AnalysisDetail]::new("Method", $method.Name)
-                $detail.ClassName = $method.ClassName
-                $detail.Signature = $method.Signature
-                $detail.LOC = $method.LOC
-                $detail.CC = $method.CC
-                $detail.HasComment = $method.HasComment
-                $detail.SourcefilePath = $content.Path
-                $detail.Message = "Method with LOC $($method.LOC) and CC $($method.CC)"
-                $analysisResult.Details.Add($detail)
+                $analysisResult = [AnalysisResult]::new($content)
+                # class definitions
+                foreach($class in $content.classes) 
+                {
+                    $detail = [AnalysisDetail]::new("Class", $class.Name)
+                    $detail.LOC = $class.LOC
+                    $detail.HasComment = $class.hasComment
+                    $detail.SourcefilePath = $content.Path
+                    $detail.Message = "Class with LOC: $($class.LOC) and HasComment: $($class.HasComment)"
+                    $analysisResult.Details.Add($detail)
+                }
+                # Process methods and constructors
+                foreach($method in $content.Methods)
+                {
+                    $detail = [AnalysisDetail]::new("Method", $method.Name)
+                    $detail.ClassName = $method.ClassName
+                    $detail.Signature = $method.Signature
+                    $detail.LOC = $method.LOC
+                    $detail.CC = $method.CC
+                    $detail.HasComment = $method.HasComment
+                    $detail.SourcefilePath = $content.Path
+                    $detail.Message = "Method with LOC $($method.LOC) and CC $($method.CC)"
+                    $analysisResult.Details.Add($detail)
+                }
+                foreach($constructor in $content.Constructors)
+                {
+                    $detail = [AnalysisDetail]::new("Constructor", "")
+                    $detail.ClassName = $constructor.ClassName
+                    $detail.Signature = $constructor.Signature
+                    $detail.LOC = $constructor.LOC
+                    $detail.CC = $constructor.CC
+                    $detail.HasComment = $constructor.HasComment
+                    $detail.SourcefilePath = $content.Path
+                    $detail.Message = "Constructor with LOC $($constructor.LOC) and CC $($constructor.CC)"
+                    $analysisResult.Details.Add($detail)
+                }
+                $analysisResults.Add($analysisResult)
             }
-            foreach($constructor in $content.Constructors)
-            {
-                $detail = [AnalysisDetail]::new("Constructor", "")
-                $detail.ClassName = $constructor.ClassName
-                $detail.Signature = $constructor.Signature
-                $detail.LOC = $constructor.LOC
-                $detail.CC = $constructor.CC
-                $detail.HasComment = $constructor.HasComment
-                $detail.SourcefilePath = $content.Path
-                $detail.Message = "Constructor with LOC $($constructor.LOC) and CC $($constructor.CC)"
-                $analysisResult.Details.Add($detail)
-            }
-            $analysisResults.Add($analysisResult)
+        }
+        catch {
+            [Messagebox]::Show("Error during analysis: $( $_.Exception.Message)", "Error", [MessageBoxButtons]::OK, [MessageBoxIcon]::Error)
         }
         return $analysisResults
     }
